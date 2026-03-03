@@ -103,10 +103,10 @@ export default function Floorplan() {
     return (
         <group position={[0, -1, 0]}>
             {/* 3D Photorealistic Wipes overlaying the physical model */}
-            <RoomPortal url="/reba.png" position={[2, 2.0, -0.89]} rotation={[0, 0, 0]} startFn={0.5 / 20} size={[2.5, 1.40625]} />
-            <RoomPortal url="/kitchen.png" position={[-6, 1.5, -9.89]} rotation={[0, 0, 0]} startFn={5.5 / 20} size={[5.333, 3]} />
-            <RoomPortal url="/bathroom.png" position={[9.89, 1.5, 1.5]} rotation={[0, -Math.PI / 2, 0]} startFn={10.5 / 20} size={[5.333, 3]} />
-            <RoomPortal url="/living_room.png" position={[-5, 1.5, 9.89]} rotation={[0, Math.PI, 0]} startFn={15.5 / 20} size={[5.333, 3]} />
+            <RoomPortal url={`${import.meta.env.BASE_URL}reba.png`} position={[2, 2.0, -0.89]} rotation={[0, 0, 0]} startFn={0.5 / 20} size={[2.5, 1.40625]} />
+            <RoomPortal url={`${import.meta.env.BASE_URL}kitchen.png`} position={[-6, 1.5, -9.89]} rotation={[0, 0, 0]} startFn={5.5 / 20} size={[5.333, 3]} />
+            <RoomPortal url={`${import.meta.env.BASE_URL}bathroom.png`} position={[9.89, 1.5, 1.5]} rotation={[0, -Math.PI / 2, 0]} startFn={10.5 / 20} size={[5.333, 3]} />
+            <RoomPortal url={`${import.meta.env.BASE_URL}living_room.png`} position={[-5, 1.5, 9.89]} rotation={[0, Math.PI, 0]} startFn={15.5 / 20} size={[5.333, 3]} />
 
             {/* Floor */}
             <ArchitectPlane position={[0, -0.1, 0]} rotation={[-Math.PI / 2, 0, 0]} args={[40, 40]} />
