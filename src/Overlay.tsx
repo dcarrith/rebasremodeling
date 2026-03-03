@@ -41,10 +41,10 @@ export default function Overlay() {
                 {/* Hero Section */}
                 <section className="relative h-[100vh] w-full flex items-center justify-center pointer-events-none">
                     <div className="max-w-4xl space-y-6 text-center px-6">
-                        <h2 className="text-sage-900 text-5xl md:text-7xl font-light tracking-tight leading-tight">
+                        <h2 className="text-sage-900 text-4xl md:text-7xl font-light tracking-tight leading-tight">
                             Visionary Spaces, <br /><span className="font-extrabold">Elevated Living.</span>
                         </h2>
-                        <p className="text-sage-700 text-lg md:text-xl font-light max-w-2xl mx-auto">
+                        <p className="text-sage-700 text-base md:text-xl font-light max-w-2xl mx-auto">
                             High-end minimalist home remodeling tailored for the modern aesthetic and a serene lifestyle.
                         </p>
                         <div className="pt-4 pointer-events-auto">
@@ -61,12 +61,12 @@ export default function Overlay() {
                 <section className="relative h-[500vh] w-full">
                     <div className="h-[300vh] w-full pointer-events-none" />
                     <div className="sticky top-0 h-screen w-full flex items-center px-6 md:px-20 pointer-events-none">
-                        <div className="max-w-2xl bg-white/50 backdrop-blur-xl p-12 rounded-2xl shadow-2xl pointer-events-auto border border-white/40">
-                            <h3 className="text-4xl font-light text-sage-900 tracking-tight mb-6">Meet <span className="font-extrabold">Reba</span></h3>
-                            <p className="text-slate-900 text-2xl leading-relaxed font-medium mb-4">
+                        <div className="max-w-2xl bg-white/50 backdrop-blur-xl p-6 md:p-12 rounded-2xl shadow-2xl pointer-events-auto border border-white/40">
+                            <h3 className="text-3xl md:text-4xl font-light text-sage-900 tracking-tight mb-4 md:mb-6">Meet <span className="font-extrabold">Reba</span></h3>
+                            <p className="text-slate-900 text-lg md:text-2xl leading-relaxed font-medium mb-4">
                                 With over fifteen years of architectural mastery, Reba approaches every home as a blank canvas for peace. Her visionary design philosophy focuses on the interplay of light, shadow, and essential form.
                             </p>
-                            <p className="text-slate-900 text-xl leading-relaxed font-medium mb-6">
+                            <p className="text-slate-900 text-base md:text-xl leading-relaxed font-medium mb-4 md:mb-6">
                                 We don't just remodel rooms; we curate experiences. Our mission is to eliminate the noise of modern life through precise, minimalist intervention.
                             </p>
                             <button
@@ -85,10 +85,10 @@ export default function Overlay() {
                 <section className="relative h-[500vh] w-full">
                     <div className="h-[300vh] w-full pointer-events-none" />
                     <div className="sticky top-0 h-screen w-full flex items-center justify-end px-6 md:px-20 pointer-events-none">
-                        <div className="max-w-xl bg-white/50 backdrop-blur-md p-12 rounded-2xl shadow-2xl pointer-events-auto border border-white/40">
-                            <h3 className="text-sm font-bold text-primary uppercase tracking-[0.3em] mb-4">Our Expertise</h3>
-                            <h4 className="text-5xl font-black mb-4 text-slate-900 tracking-tight">Kitchens</h4>
-                            <p className="text-slate-900 font-medium leading-relaxed text-2xl mb-8">Functional minimalism for the culinary heart of your home. Precision meets warmth in every detail, using the finest natural materials to craft a serene cooking environment.</p>
+                        <div className="max-w-xl bg-white/50 backdrop-blur-md p-6 md:p-12 rounded-2xl shadow-2xl pointer-events-auto border border-white/40">
+                            <h3 className="text-xs md:text-sm font-bold text-primary uppercase tracking-[0.3em] mb-2 md:mb-4">Our Expertise</h3>
+                            <h4 className="text-3xl md:text-5xl font-black mb-2 md:mb-4 text-slate-900 tracking-tight">Kitchens</h4>
+                            <p className="text-slate-900 font-medium leading-relaxed text-lg md:text-2xl mb-6 md:mb-8">Functional minimalism for the culinary heart of your home. Precision meets warmth in every detail, using the finest natural materials to craft a serene cooking environment.</p>
                             <button
                                 onClick={() => scrollToPage(14 / 20)}
                                 className="text-sage-900 font-bold border-b-2 border-primary pb-1 hover:text-primary transition-colors">
@@ -103,10 +103,10 @@ export default function Overlay() {
                 <section className="relative h-[500vh] w-full">
                     <div className="h-[300vh] w-full pointer-events-none" />
                     <div className="sticky top-0 h-screen w-full flex items-center justify-start px-6 md:px-20 pointer-events-none">
-                        <div className="max-w-xl bg-white/50 backdrop-blur-md p-12 rounded-2xl shadow-2xl pointer-events-auto border border-white/40">
-                            <h3 className="text-sm font-bold text-primary uppercase tracking-[0.3em] mb-4">Our Expertise</h3>
-                            <h4 className="text-5xl font-black mb-4 text-slate-900 tracking-tight">Bathrooms</h4>
-                            <p className="text-slate-900 font-medium leading-relaxed text-2xl mb-8">Spa-like serenity utilizing raw textures, floating vanities, and modern fixtures for daily restoration and reflection.</p>
+                        <div className="max-w-xl bg-white/50 backdrop-blur-md p-6 md:p-12 rounded-2xl shadow-2xl pointer-events-auto border border-white/40">
+                            <h3 className="text-xs md:text-sm font-bold text-primary uppercase tracking-[0.3em] mb-2 md:mb-4">Our Expertise</h3>
+                            <h4 className="text-3xl md:text-5xl font-black mb-2 md:mb-4 text-slate-900 tracking-tight">Bathrooms</h4>
+                            <p className="text-slate-900 font-medium leading-relaxed text-lg md:text-2xl mb-6 md:mb-8">Spa-like serenity utilizing raw textures, floating vanities, and modern fixtures for daily restoration and reflection.</p>
                             <button
                                 onClick={() => scrollToPage(19 / 20)}
                                 className="text-sage-900 font-bold border-b-2 border-primary pb-1 hover:text-primary transition-colors">
@@ -121,10 +121,10 @@ export default function Overlay() {
                 <section className="relative h-[400vh] w-full">
                     <div className="h-[300vh] w-full pointer-events-none" />
                     <div className="sticky top-0 h-screen w-full flex items-center justify-end px-6 md:px-20 pointer-events-none">
-                        <div className="max-w-xl bg-white/50 backdrop-blur-md p-12 rounded-2xl shadow-2xl pointer-events-auto border border-white/40">
-                            <h3 className="text-sm font-bold text-primary uppercase tracking-[0.3em] mb-4">Our Expertise</h3>
-                            <h4 className="text-5xl font-black mb-4 text-slate-900 tracking-tight">Living Spaces</h4>
-                            <p className="text-slate-900 font-medium leading-relaxed text-2xl mb-8">Open, airy layouts designed for elevated living and architectural flow. Seamlessly connecting indoor tranquility with outdoor lighting.</p>
+                        <div className="max-w-xl bg-white/50 backdrop-blur-md p-6 md:p-12 rounded-2xl shadow-2xl pointer-events-auto border border-white/40">
+                            <h3 className="text-xs md:text-sm font-bold text-primary uppercase tracking-[0.3em] mb-2 md:mb-4">Our Expertise</h3>
+                            <h4 className="text-3xl md:text-5xl font-black mb-2 md:mb-4 text-slate-900 tracking-tight">Living Spaces</h4>
+                            <p className="text-slate-900 font-medium leading-relaxed text-lg md:text-2xl mb-6 md:mb-8">Open, airy layouts designed for elevated living and architectural flow. Seamlessly connecting indoor tranquility with outdoor lighting.</p>
                             <button
                                 onClick={() => {
                                     scrollToPage(1);
@@ -138,23 +138,23 @@ export default function Overlay() {
                 </section>
 
                 {/* Final CTA & Footer */}
-                <section className="relative h-[100vh] w-full flex flex-col justify-end pointer-events-none mt-0">
-                    <div className="bg-black/40 backdrop-blur-2xl pointer-events-auto w-full pt-32 min-h-screen flex flex-col justify-end">
-                        <div className="max-w-7xl mx-auto px-6 pb-32 text-center">
-                            <h2 className="text-white text-5xl md:text-7xl font-light leading-snug tracking-wide">
+                <section className="relative min-h-[100vh] w-full flex flex-col justify-end pointer-events-none mt-0">
+                    <div className="bg-black/40 backdrop-blur-2xl pointer-events-auto w-full pt-16 md:pt-32 min-h-[100vh] flex flex-col justify-end">
+                        <div className="max-w-7xl mx-auto px-6 pb-16 md:pb-32 text-center">
+                            <h2 className="text-white text-4xl md:text-7xl font-light leading-snug tracking-wide">
                                 Ready to transform your <br />
                                 <span className="font-extrabold italic">personal sanctuary?</span>
                             </h2>
-                            <div className="mt-14">
+                            <div className="mt-8 md:mt-14">
                                 <button
                                     onClick={() => setIsDialogOpen(true)}
-                                    className="bg-white text-gray-900 px-16 py-6 rounded-lg text-2xl font-extrabold hover:scale-105 hover:bg-gray-100 transition-all shadow-2xl hover:shadow-white/20">
+                                    className="bg-white text-gray-900 px-8 py-4 md:px-16 md:py-6 rounded-lg text-xl md:text-2xl font-extrabold hover:scale-105 hover:bg-gray-100 transition-all shadow-2xl hover:shadow-white/20">
                                     Book a Consultation
                                 </button>
                             </div>
                         </div>
 
-                        <footer className="border-t border-white/10 px-6 lg:px-40 py-16 text-left">
+                        <footer className="border-t border-white/10 px-6 lg:px-40 py-8 md:py-16 text-left">
                             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
                                 {/* Brand Column */}
                                 <div className="col-span-1 md:col-span-1 space-y-6">
