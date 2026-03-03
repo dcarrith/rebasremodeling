@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: boardforpeace-migrate
+  namespace: boardforpeace
+  labels:
+    app: boardforpeace
+    tier: maintenance
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    metadata:
+      labels:
+        app: boardforpeace
+        tier: maintenance
+    spec:
+      containers:
+        - name: boardforpeace-migrate
+          image: boardforpeace-app:latest
+          imagePullPolicy: IfNotPresent
+          command: ["php", "artisan", "migrate", "--force"]
+          env:
+            - name: APP_ENV
+              value: "production"
+            - name: DB_CONNECTION
+              value: "mysql"
+            - name: DB_HOST
+              value: "mariadb"
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_DATABASE
+              value: "boardforpeace_pool"
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: boardforpeace-secrets
+                  key: db-username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: boardforpeace-secrets
+                  key: db-password
+      restartPolicy: OnFailure

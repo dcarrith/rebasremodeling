@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: terraform-mcp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terraform-mcp
+  namespace: terraform-mcp
+  labels:
+    app: terraform-mcp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: terraform-mcp
+  template:
+    metadata:
+      labels:
+        app: terraform-mcp
+    spec:
+      containers:
+        - name: terraform-mcp
+          image: terraform-mcp-server:dev
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: TRANSPORT_MODE
+              value: "streamable-http"
+            - name: TRANSPORT_HOST
+              value: "0.0.0.0"
+            - name: TRANSPORT_PORT
+              value: "8080"
+            - name: MCP_SESSION_MODE
+              value: "stateless"
+            - name: MCP_CORS_MODE
+              value: "disabled"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: terraform-mcp
+  namespace: terraform-mcp
+  labels:
+    app: terraform-mcp
+spec:
+  type: ClusterIP
+  selector:
+    app: terraform-mcp
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http

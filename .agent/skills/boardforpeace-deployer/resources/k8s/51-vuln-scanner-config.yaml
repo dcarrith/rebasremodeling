@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vuln-scanner-config
+  namespace: boardforpeace
+data:
+  targets.txt: |
+    # Internal Kubernetes services (direct cluster DNS)
+    http://boardforpeace-web.boardforpeace.svc.cluster.local
+    http://boardforpeace-reverb.boardforpeace.svc.cluster.local:8080
+    http://ingress-nginx-controller.ingress-nginx.svc.cluster.local
+
+    # External-facing ingress endpoints (scanned via ingress controller)
+    https://boardforpeace.foundation
+    https://mcpch.ai
+    https://data.higgs.global

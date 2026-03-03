@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aws-pricing-mcp
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aws-pricing-credentials
+  namespace: aws-pricing-mcp
+type: Opaque
+stringData:
+  AWS_ACCESS_KEY_ID: "PLACEHOLDER"
+  AWS_SECRET_ACCESS_KEY: "PLACEHOLDER"
+  AWS_REGION: "us-east-1"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aws-pricing-mcp
+  namespace: aws-pricing-mcp
+  labels:
+    app: aws-pricing-mcp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aws-pricing-mcp
+  template:
+    metadata:
+      labels:
+        app: aws-pricing-mcp
+    spec:
+      containers:
+        - name: aws-pricing-mcp
+          image: aws-pricing-mcp-server:dev
+          imagePullPolicy: Never
+          command: ["/app/.venv/bin/python3", "-c"]
+          args:
+            - |
+              from mcp.server.fastmcp.server import TransportSecuritySettings
+              from awslabs.aws_pricing_mcp_server.server import mcp
+              mcp.settings.host = '0.0.0.0'
+              mcp.settings.port = 8889
+              mcp.settings.transport_security = TransportSecuritySettings(enable_dns_rebinding_protection=False)
+              mcp.run(transport='streamable-http')
+          ports:
+            - containerPort: 8889
+              name: http
+          envFrom:
+            - secretRef:
+                name: aws-pricing-credentials
+          livenessProbe:
+            tcpSocket:
+              port: 8889
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            tcpSocket:
+              port: 8889
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aws-pricing-mcp
+  namespace: aws-pricing-mcp
+  labels:
+    app: aws-pricing-mcp
+spec:
+  type: ClusterIP
+  selector:
+    app: aws-pricing-mcp
+  ports:
+    - port: 8889
+      targetPort: 8889
+      protocol: TCP
+      name: http

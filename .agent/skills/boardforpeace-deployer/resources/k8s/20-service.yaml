@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: boardforpeace-web
+  namespace: boardforpeace
+spec:
+  selector:
+    app: boardforpeace
+    tier: web
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP

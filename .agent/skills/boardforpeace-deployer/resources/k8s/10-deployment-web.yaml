@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: boardforpeace-web
+  namespace: boardforpeace
+  labels:
+    app: boardforpeace
+    tier: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: boardforpeace
+      tier: web
+  template:
+    metadata:
+      labels:
+        app: boardforpeace
+        tier: web
+    spec:
+      containers:
+        - name: boardforpeace-app
+          image: boardforpeace-app:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          env:
+            - name: APP_NAME
+              value: "BOARDFORPEACE.FARM"
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: boardforpeace-secrets
+                  key: app-key
+            - name: DB_CONNECTION
+              value: "mysql"
+            - name: DB_HOST
+              value: "mariadb"
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_DATABASE
+              value: "boardforpeace_pool"
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: boardforpeace-secrets
+                  key: db-username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: boardforpeace-secrets
+                  key: db-password
+          envFrom:
+            - configMapRef:
+                name: boardforpeace-chia-config
+          volumeMounts:
+            - name: boardforpeace-storage
+              mountPath: /var/www/html/storage/app/public
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 20
+      volumes:
+        - name: boardforpeace-storage
+          persistentVolumeClaim:
+            claimName: boardforpeace-storage

@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: boardforpeace-reverb
+  namespace: boardforpeace
+  labels:
+    app: boardforpeace
+    tier: reverb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: boardforpeace
+      tier: reverb
+  template:
+    metadata:
+      labels:
+        app: boardforpeace
+        tier: reverb
+    spec:
+      containers:
+        - name: boardforpeace-reverb
+          image: boardforpeace-app:latest
+          imagePullPolicy: IfNotPresent
+          command:
+            ["php", "artisan", "reverb:start", "--host=0.0.0.0", "--port=8080"]
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: APP_ENV
+              value: "production"
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: boardforpeace-secrets
+                  key: app-key
+            - name: DB_CONNECTION
+              value: "mysql"
+            - name: DB_HOST
+              value: "mariadb"
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_DATABASE
+              value: "boardforpeace_pool"
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: boardforpeace-secrets
+                  key: db-username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: boardforpeace-secrets
+                  key: db-password
+            - name: REDIS_HOST
+              value: "boardforpeace-redis.boardforpeace.svc.cluster.local"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REVERB_SERVER_HOST
+              value: "0.0.0.0"
+            - name: REVERB_SERVER_PORT
+              value: "8080"
+            - name: REVERB_SCALING_ENABLED
+              value: "true"
+            - name: REVERB_APP_ID
+              value: "boardforpeace-app"
+            - name: REVERB_APP_KEY
+              value: "boardforpeace-reverb-key"
+            - name: REVERB_APP_SECRET
+              value: "boardforpeace-reverb-secret"
+          envFrom:
+            - configMapRef:
+                name: boardforpeace-chia-config
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 30
+            failureThreshold: 5

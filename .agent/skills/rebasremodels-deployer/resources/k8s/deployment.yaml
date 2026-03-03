@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rebasremodels-web
+  labels:
+    app: rebasremodels-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rebasremodels-web
+  template:
+    metadata:
+      labels:
+        app: rebasremodels-web
+    spec:
+      containers:
+      - name: web
+        image: rebasremodels-app:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rebasremodels-web
+spec:
+  selector:
+    app: rebasremodels-web
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

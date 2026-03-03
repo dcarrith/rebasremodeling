@@ -1,0 +1,122 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: vuln-scanner
+  namespace: boardforpeace
+spec:
+  ttlSecondsAfterFinished: 600
+  backoffLimit: 0
+  template:
+    metadata:
+      labels:
+        app: vuln-scanner
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: nuclei
+          image: projectdiscovery/nuclei:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "[*] Starting Nuclei vulnerability scan..."
+              echo "[*] Updating templates..."
+              nuclei -update-templates -silent 2>/dev/null || true
+
+              echo "[*] Scanning targets..."
+              # Use timeout to gracefully stop Nuclei after 18 minutes (1080s)
+              # This allows time to run through all ~85k requests
+              timeout 1080 nuclei \
+                -l /config/targets.txt \
+                -severity critical,high,medium,low,info \
+                -tags cve,misconfig,exposure,default-login,ssl,tech \
+                -jsonl \
+                -output /results/vuln-scan.jsonl \
+                -silent \
+                -timeout 10 \
+                -retries 1 \
+                -rate-limit 50 \
+                -bulk-size 10 \
+                -concurrency 10 \
+                -no-color \
+                -stats \
+                -stats-interval 30 \
+                2>&1 | tee /results/scan-log.txt || true
+
+              # Ensure output file exists even if no findings
+              touch /results/vuln-scan.jsonl
+
+              # Count findings
+              FINDINGS=$(wc -l < /results/vuln-scan.jsonl 2>/dev/null || echo "0")
+              echo "[*] Scan complete. $FINDINGS findings."
+
+              # Write scan metadata
+              cat > /results/scan-meta.json <<EOF
+              {
+                "scanner": "nuclei",
+                "version": "$(nuclei -version 2>&1 | head -1)",
+                "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+                "targets_scanned": $(grep -cv '^#\|^$' /config/targets.txt || echo 0),
+                "total_findings": $FINDINGS
+              }
+              EOF
+
+              # Signal completion for the sidecar
+              touch /results/.scan-done
+              echo "[*] Results written. Waiting for extraction..."
+              # Keep nuclei container alive for a bit for extraction
+              sleep 60
+          volumeMounts:
+            - name: config
+              mountPath: /config
+              readOnly: true
+            - name: results
+              mountPath: /results
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "200m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+
+        # Sidecar to keep results accessible after nuclei exits
+        - name: results-server
+          image: busybox:1.36
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "[*] Results server started..."
+              # Wait up to 22 minutes for scan completion
+              WAITED=0
+              while [ ! -f /results/.scan-done ] && [ $WAITED -lt 1320 ]; do
+                sleep 5
+                WAITED=$((WAITED + 5))
+              done
+              if [ -f /results/.scan-done ]; then
+                echo "[*] Scan completed. Results ready."
+              else
+                echo "[*] Timeout waiting for scan completion."
+              fi
+              echo "[*] Keeping pod alive for result extraction..."
+              # Keep alive for 5 minutes to allow kubectl cp
+              sleep 300
+          volumeMounts:
+            - name: results
+              mountPath: /results
+              readOnly: true
+          resources:
+            requests:
+              memory: "16Mi"
+              cpu: "10m"
+            limits:
+              memory: "32Mi"
+              cpu: "50m"
+
+      volumes:
+        - name: config
+          configMap:
+            name: vuln-scanner-config
+        - name: results
+          emptyDir: {}
