@@ -27,13 +27,15 @@ export default function Overlay() {
                             <h1 className="text-sage-900 dark:text-slate-100 text-xl font-extrabold tracking-tight">REBA'S <span className="font-light text-sage-600">REMODELING</span></h1>
                         </div>
                         <nav className="hidden md:flex items-center gap-10">
-                            <a className="text-sage-900 dark:text-slate-100 text-sm font-medium hover:text-primary transition-colors" href="#">About</a>
-                            <a className="text-sage-900 dark:text-slate-100 text-sm font-medium hover:text-primary transition-colors" href="#">Services</a>
-                            <a className="text-sage-900 dark:text-slate-100 text-sm font-medium hover:text-primary transition-colors" href="#">Ethos</a>
-                            <a className="text-sage-900 dark:text-slate-100 text-sm font-medium hover:text-primary transition-colors" href="#">Contact</a>
+                            <button onClick={() => scrollToPage(4 / 20)} className="text-sage-900 dark:text-slate-100 text-sm font-medium hover:text-primary transition-colors">About</button>
+                            <button onClick={() => scrollToPage(9 / 20)} className="text-sage-900 dark:text-slate-100 text-sm font-medium hover:text-primary transition-colors">Portfolio</button>
+                            <button onClick={() => scrollToPage(1)} className="text-sage-900 dark:text-slate-100 text-sm font-medium hover:text-primary transition-colors">Contact</button>
                         </nav>
-                        <button onClick={() => setIsDialogOpen(true)} className="bg-primary text-sage-900 px-6 py-2.5 rounded-lg text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all active:scale-95">
-                            Consult Reba
+                        <button onClick={() => {
+                            scrollToPage(1);
+                            setTimeout(() => setIsDialogOpen(true), 1250);
+                        }} className="bg-primary text-sage-900 px-6 py-2.5 rounded-lg text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all active:scale-95">
+                            Consultation
                         </button>
                     </div>
                 </header>
